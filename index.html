@@ -566,6 +566,7 @@
       display: flex;
       gap: 6px;
       flex-wrap: wrap;
+      align-items: center;
     }
 
     .filter-chip {
@@ -590,6 +591,13 @@
       background: var(--primary);
       border-color: var(--primary);
       color: white;
+    }
+
+    .filter-divider {
+      width: 1px;
+      height: 30px;
+      background: var(--border);
+      margin: 0 4px;
     }
 
     .table-container {
@@ -1019,7 +1027,7 @@
     /* ===== EVOLUTION CARDS ===== */
     .evolution-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
       gap: 20px;
       padding: 20px 30px;
     }
@@ -1102,54 +1110,115 @@
       font-style: italic;
     }
 
+    .evolution-card .alerta-graduacao {
+      margin: 10px 20px 0 20px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: pulseAlerta 1.5s ease-in-out infinite;
+    }
+
+    .evolution-card .alerta-graduacao.vencido {
+      background: rgba(231, 76, 60, 0.2);
+      border-left: 4px solid #E74C3C;
+      color: #ff6b6b;
+    }
+
+    .evolution-card .alerta-graduacao.proximo {
+      background: rgba(243, 156, 18, 0.2);
+      border-left: 4px solid #F39C12;
+      color: #f1c40f;
+    }
+
+    .evolution-card .alerta-graduacao.atencao {
+      background: rgba(243, 156, 18, 0.1);
+      border-left: 4px solid #F39C12;
+      color: #f39c12;
+    }
+
+    .evolution-card .alerta-graduacao.sem-alerta {
+      background: rgba(46, 204, 113, 0.1);
+      border-left: 4px solid #2ECC71;
+      color: #2ecc71;
+    }
+
+    .evolution-card .alerta-graduacao .icone {
+      font-size: 1.1rem;
+    }
+    .evolution-card .alerta-graduacao .texto {
+      flex: 1;
+    }
+    .evolution-card .alerta-graduacao .tempo {
+      font-weight: 800;
+      font-size: 0.8rem;
+    }
+
+    @keyframes pulseAlerta {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.85; }
+    }
+
     .evolution-card .card-footer {
       padding: 12px 20px;
       background: var(--secondary);
       border-top: 1px solid var(--border);
       display: flex;
-      gap: 8px;
+      gap: 6px;
       flex-wrap: wrap;
     }
 
-    .btn-evolution {
-      padding: 4px 14px;
+    .evolution-card .card-footer .evo-btn {
+      flex: 1;
+      min-width: 55px;
+      padding: 5px 8px;
       border: none;
       border-radius: 20px;
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-weight: 700;
       cursor: pointer;
       transition: var(--transition);
       font-family: 'Inter', sans-serif;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      justify-content: center;
+      gap: 3px;
+      text-align: center;
     }
 
-    .btn-evolution:hover {
+    .evolution-card .card-footer .evo-btn:hover {
       transform: scale(1.05);
     }
 
-    .btn-evolution.promover {
+    .evolution-card .card-footer .evo-btn.promover {
       background: var(--success);
       color: white;
     }
 
-    .btn-evolution.editar-evo {
+    .evolution-card .card-footer .evo-btn.editar {
       background: #3498DB;
       color: white;
     }
 
-    .btn-evolution.excluir-evo {
-      background: var(--danger);
-      color: white;
-    }
-
-    .btn-evolution.ver-todas {
+    .evolution-card .card-footer .evo-btn.ver-todas {
       background: var(--accent);
       color: #1A1A2E;
     }
 
-    /* ===== STATS DE EVOLUÇÃO ===== */
+    .evolution-card .card-footer .evo-btn.excluir {
+      background: var(--danger);
+      color: white;
+    }
+
+    .evolution-card .card-footer .evo-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
     .stats-grid-evo {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -1187,7 +1256,84 @@
       flex-wrap: wrap;
     }
 
-    /* ===== RESPONSIVO ===== */
+    /* ===== CONFIGURAÇÕES DE GRADUAÇÃO - ESTILO DA FOTO ===== */
+    .graduacao-config-modal {
+      padding: 5px 0;
+    }
+
+    .graduacao-config-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .graduacao-item-foto {
+      background: var(--bg-card);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      padding: 16px 20px;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .graduacao-item-foto:hover {
+      border-color: var(--accent);
+      background: var(--bg-card-hover);
+    }
+
+    .graduacao-item-foto .fa-award {
+      font-size: 1.8rem;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .graduacao-item-foto .nome-faixa {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .graduacao-item-foto .label-tempo {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .graduacao-item-foto .controle-foto {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .graduacao-item-foto .controle-foto input {
+      width: 70px;
+      padding: 6px 8px;
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .graduacao-item-foto .controle-foto input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(241, 196, 15, 0.15);
+    }
+
+    .graduacao-item-foto .controle-foto .unidade {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
     @media (max-width: 1024px) {
       .stats-grid {
         grid-template-columns: repeat(2, 1fr);
@@ -1220,6 +1366,7 @@
       .search-section { flex-direction: column; padding: 12px 20px; }
       .search-wrapper { width: 100%; }
       .filter-group { width: 100%; justify-content: center; }
+      .filter-divider { display: none; }
       .table-container { padding: 12px 15px; }
       .month-summary { flex-direction: column; align-items: stretch; gap: 10px; }
       .bulk-actions { margin-left: 0; justify-content: center; }
@@ -1228,7 +1375,7 @@
       .pin-input input { width: 48px; height: 52px; font-size: 1.3rem; }
       .evolution-grid { grid-template-columns: 1fr; padding: 15px; }
       .modal-box { max-width: 95%; padding: 20px; }
-      .graduacao-config-grid-modal { grid-template-columns: repeat(2, 1fr); }
+      .graduacao-item-foto .controle-foto input { width: 60px; }
     }
 
     @media (max-width: 480px) {
@@ -1240,8 +1387,10 @@
       .table-modern { font-size: 0.7rem; min-width: 1100px; }
       .payment-date-input { width: 60px; }
       .action-btn { width: 26px; height: 26px; font-size: 0.7rem; }
-      .graduacao-config-grid-modal { grid-template-columns: 1fr; }
       .header-actions .btn-icon { font-size: 0.6rem; padding: 6px 8px; }
+      .evolution-card .alerta-graduacao { font-size: 0.65rem; padding: 8px 10px; }
+      .evolution-card .card-footer .evo-btn { font-size: 0.5rem; padding: 3px 4px; min-width: 38px; }
+      .graduacao-item-foto .controle-foto input { width: 55px; }
     }
 
     .table-modern tbody tr {
@@ -1407,7 +1556,7 @@
   </div>
 </div>
 
-<!-- Modal Configuração de Graduações -->
+<!-- ===== MODAL CONFIGURAÇÕES DE GRADUAÇÃO ===== -->
 <div id="modalConfigGraduacoes" class="modal">
   <div class="modal-box">
     <div class="modal-header">
@@ -1415,11 +1564,11 @@
       <button class="modal-close" onclick="fecharModalConfigGraduacoes()">&times;</button>
     </div>
     <div class="modal-body">
-      <p style="color:var(--text-muted);font-size:0.8rem;margin-bottom:15px;">
+      <p style="color:var(--text-muted);font-size:0.8rem;margin-bottom:15px;text-align:center;">
         Defina o tempo mínimo em meses para cada graduação. Os alertas de carência serão baseados nestes valores.
       </p>
       <div class="graduacao-config-modal">
-        <div class="graduacao-config-grid-modal" id="graduacaoConfigGridModal"></div>
+        <div class="graduacao-config-list" id="graduacaoConfigListModal"></div>
       </div>
     </div>
     <div class="modal-footer">
@@ -1555,7 +1704,6 @@
         <button class="btn-icon" onclick="alternarTema()" id="themeToggle">
           <i class="fas fa-moon"></i>
         </button>
-        <!-- NOVOS BOTÕES DE BACKUP -->
         <button class="btn-icon btn-copy-backup" onclick="copiarBackup()" title="Copiar backup para área de transferência">
           <i class="fas fa-copy"></i> Copiar Backup
         </button>
@@ -1657,6 +1805,7 @@
       </div>
     </div>
 
+    <!-- ===== FILTROS ===== -->
     <div class="search-section">
       <div class="search-wrapper">
         <i class="fas fa-search"></i>
@@ -1668,12 +1817,16 @@
         <button class="filter-chip" data-filter="pendentes" onclick="aplicarFiltroStatus('pendentes')">⏳ Pendentes</button>
         <button class="filter-chip" data-filter="vencidos" onclick="aplicarFiltroStatus('vencidos')">🔴 Vencidos</button>
       </div>
-      <div class="filter-group" style="border-left:1px solid var(--border);padding-left:12px;">
+
+      <div class="filter-divider"></div>
+
+      <div class="filter-group">
         <button class="filter-chip active" data-turma="todas" onclick="aplicarFiltroTurma('todas')">Todas</button>
         <button class="filter-chip" data-turma="infantil" onclick="aplicarFiltroTurma('infantil')">👶 Infantil</button>
         <button class="filter-chip" data-turma="juvenil" onclick="aplicarFiltroTurma('juvenil')">🧑 Juvenil</button>
         <button class="filter-chip" data-turma="adulto" onclick="aplicarFiltroTurma('adulto')">💪 Adulto</button>
       </div>
+
       <button class="btn-modern btn-outline btn-sm" onclick="limparPesquisa()">
         <i class="fas fa-times"></i> Limpar
       </button>
@@ -1724,7 +1877,6 @@
       </button>
     </div>
 
-    <!-- Stats de Evolução -->
     <div class="stats-grid-evo" id="statsEvoGrid">
       <div class="stat-card">
         <div class="stat-icon purple"><i class="fas fa-users"></i></div>
@@ -1756,7 +1908,6 @@
       </div>
     </div>
 
-    <!-- Grid de Evolução -->
     <div class="evolution-grid" id="evolutionGrid"></div>
   </div>
 
@@ -1836,9 +1987,8 @@
   }
 
   // ============================================================
-  // NOVAS FUNÇÕES: COPIAR E COLAR BACKUP
+  // BACKUP (COPIAR E COLAR)
   // ============================================================
-
   function copiarBackup() {
     try {
       const dados = {
@@ -1852,17 +2002,13 @@
 
       const textoBackup = JSON.stringify(dados);
 
-      // Tenta copiar para a área de transferência
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(textoBackup).then(() => {
           showToast('📋 Backup copiado para a área de transferência!', 'success', 4000);
-          showToast('📤 Cole no WhatsApp ou envie para quem precisar.', 'info', 3000);
         }).catch(() => {
-          // Fallback: método antigo
           copiarTextoFallback(textoBackup);
         });
       } else {
-        // Fallback para navegadores sem Clipboard API
         copiarTextoFallback(textoBackup);
       }
     } catch (e) {
@@ -1871,7 +2017,6 @@
   }
 
   function copiarTextoFallback(texto) {
-    // Cria um elemento textarea temporário
     const textarea = document.createElement('textarea');
     textarea.value = texto;
     textarea.style.position = 'fixed';
@@ -1883,9 +2028,8 @@
 
     try {
       document.execCommand('copy');
-      showToast('📋 Backup copiado! Cole onde desejar.', 'success', 4000);
+      showToast('📋 Backup copiado!', 'success', 4000);
     } catch (e) {
-      // Se falhar, mostra o texto para copiar manualmente
       alert('📋 COPIE O TEXTO ABAIXO:\n\n' + texto);
       showToast('Copie o texto exibido na tela!', 'warning', 5000);
     }
@@ -1897,16 +2041,13 @@
     document.getElementById('restaurarStatus').textContent = '';
     document.getElementById('modalRestaurar').classList.add('active');
 
-    // Tenta ler da área de transferência automaticamente
     if (navigator.clipboard && navigator.clipboard.readText) {
       navigator.clipboard.readText().then(texto => {
         if (texto && texto.trim().startsWith('{')) {
           document.getElementById('textoRestaurar').value = texto;
           showToast('📋 Texto da área de transferência colado automaticamente!', 'info', 3000);
         }
-      }).catch(() => {
-        // Não faz nada se não conseguir ler
-      });
+      }).catch(() => {});
     }
   }
 
@@ -1929,7 +2070,6 @@
     }
 
     try {
-      // Limpa o texto: remove possíveis prefixos do WhatsApp
       let textoLimpo = texto;
       const posInicio = textoLimpo.indexOf('{');
       if (posInicio > 0) {
@@ -1937,20 +2077,16 @@
       }
 
       const dados = JSON.parse(textoLimpo);
-
-      // Validação básica
       if (!dados.alunos || !Array.isArray(dados.alunos)) {
         throw new Error('Formato inválido: faltando lista de alunos');
       }
 
-      // Confirmação
       if (!confirm(`🔄 Restaurar backup com ${dados.alunos.length} alunos?\nIsso substituirá TODOS os dados atuais.`)) {
         statusEl.textContent = '⏹️ Restauração cancelada.';
         statusEl.style.color = 'var(--warning)';
         return;
       }
 
-      // Restaura os dados
       alunos = dados.alunos.map(a => ({
         nome: a.nome,
         turma: a.turma || "juvenil",
@@ -1980,7 +2116,6 @@
         salvarConfigGraduacoes();
       }
 
-      // Salva os dados
       salvar();
       renderizarTabela();
       renderizarEvolucoes();
@@ -1989,7 +2124,6 @@
       statusEl.style.color = 'var(--success)';
       showToast(`✅ Backup restaurado! ${alunos.length} alunos`, 'success', 4000);
 
-      // Fecha o modal após 2 segundos
       setTimeout(() => {
         fecharModalRestaurar();
       }, 2000);
@@ -2073,7 +2207,7 @@
   }
 
   // ============================================================
-  // MENSALIDADES - RENDERIZAÇÃO
+  // MENSALIDADES - FILTROS E RENDERIZAÇÃO
   // ============================================================
   function aplicarFiltroStatus(filtro) {
     currentFilterStatus = filtro;
@@ -2180,6 +2314,7 @@
 
     salvar();
     renderizarTabela();
+    renderizarEvolucoes();
   }
 
   function atualizarDataPagamento(index, mesIndex, dataValue) {
@@ -2194,6 +2329,7 @@
 
     salvar();
     renderizarTabela();
+    renderizarEvolucoes();
   }
 
   // ============================================================
@@ -2300,6 +2436,51 @@
       const statusClass = restante !== null ? (restante <= 0 ? 'alerta' : restante <= 1 ? 'proximo' : 'ok') : '';
       const statusLabel = restante !== null ? (restante <= 0 ? '🔴 Venceu!' : restante <= 1 ? '🟡 Próximo!' : `✅ ${restante} meses`) : '⏳ Aguardando';
 
+      let alertaHtml = '';
+      if (proxima && restante !== null) {
+        if (restante <= 0) {
+          alertaHtml = `
+            <div class="alerta-graduacao vencido">
+              <span class="icone">🔴</span>
+              <span class="texto"><strong>ALERTA:</strong> Carência VENCIDA! (há ${Math.abs(restante)} meses)</span>
+              <span class="tempo">URGENTE!</span>
+            </div>
+          `;
+        } else if (restante <= 1) {
+          alertaHtml = `
+            <div class="alerta-graduacao proximo">
+              <span class="icone">🟡</span>
+              <span class="texto"><strong>ATENÇÃO:</strong> Carência PRÓXIMA! (${restante} mês)</span>
+              <span class="tempo">⚠️</span>
+            </div>
+          `;
+        } else if (restante <= 3) {
+          alertaHtml = `
+            <div class="alerta-graduacao atencao">
+              <span class="icone">🟠</span>
+              <span class="texto"><strong>ATENÇÃO:</strong> ${restante} meses para vencer</span>
+              <span class="tempo">⏳</span>
+            </div>
+          `;
+        } else {
+          alertaHtml = `
+            <div class="alerta-graduacao sem-alerta">
+              <span class="icone">✅</span>
+              <span class="texto">Tempo suficiente (${restante} meses)</span>
+              <span class="tempo">👍</span>
+            </div>
+          `;
+        }
+      } else if (!proxima) {
+        alertaHtml = `
+          <div class="alerta-graduacao sem-alerta">
+            <span class="icone">🏆</span>
+            <span class="texto">Graduação máxima alcançada!</span>
+            <span class="tempo">🎯</span>
+          </div>
+        `;
+      }
+
       const card = document.createElement('div');
       card.className = 'evolution-card';
       card.innerHTML = `
@@ -2324,11 +2505,20 @@
             <i class="fas fa-quote-left"></i> ${obsUltima}
           </div>
         </div>
+        ${alertaHtml}
         <div class="card-footer">
-          ${proxima ? `<button class="btn-evolution promover" onclick="promoverAluno(${index})"><i class="fas fa-award"></i> Promover</button>` : ''}
-          <button class="btn-evolution editar-evo" onclick="abrirModalEditarEvolucao(${index})"><i class="fas fa-edit"></i> Editar</button>
-          <button class="btn-evolution ver-todas" onclick="verTodasEvolucoes(${index})"><i class="fas fa-list"></i> Ver Todas</button>
-          <button class="btn-evolution excluir-evo" onclick="excluirEvolucao(${index})"><i class="fas fa-trash"></i> Excluir</button>
+          <button class="evo-btn promover" ${proxima ? '' : 'disabled'} onclick="${proxima ? `promoverAluno(${index})` : 'showToast(\'✅ Graduação máxima alcançada!\', \'info\')'}">
+            <i class="fas fa-award"></i> Promover
+          </button>
+          <button class="evo-btn editar" onclick="abrirModalEditarEvolucao(${index})">
+            <i class="fas fa-edit"></i> Editar
+          </button>
+          <button class="evo-btn ver-todas" onclick="verTodasEvolucoes(${index})">
+            <i class="fas fa-list"></i> Todas
+          </button>
+          <button class="evo-btn excluir" onclick="excluirEvolucao(${index})">
+            <i class="fas fa-trash"></i> Excluir
+          </button>
         </div>
       `;
       grid.appendChild(card);
@@ -2465,37 +2655,77 @@
   }
 
   // ============================================================
-  // CONFIGURAÇÕES DE GRADUAÇÃO
+  // CONFIGURAÇÕES DE GRADUAÇÃO - ESTILO DA FOTO
   // ============================================================
   function abrirModalConfigGraduacoes() {
-    const grid = document.getElementById('graduacaoConfigGridModal');
-    grid.innerHTML = Object.keys(configGraduacoes).map(key => `
-      <div class="graduacao-item-modal">
-        <i class="fas fa-award"></i>
-        <h5>${key.replace(/_/g, ' ').toUpperCase()}</h5>
-        <p>Meses mínimos:</p>
-        <input type="number" min="1" max="60" value="${configGraduacoes[key]}" data-grad="${key}">
-      </div>
-    `).join('');
+    renderizarConfigGraduacoesModal();
     document.getElementById('modalConfigGraduacoes').classList.add('active');
   }
 
+  function fecharModalConfigGraduacoes() {
+    document.getElementById('modalConfigGraduacoes').classList.remove('active');
+  }
+
+  function renderizarConfigGraduacoesModal() {
+    const list = document.getElementById('graduacaoConfigListModal');
+    list.innerHTML = '';
+
+    const listaGraduacoes = [
+      'Branca', 'Cinza/Branca', 'Cinza', 'Cinza/Preto',
+      'Amarela/Branca', 'Amarela', 'Amarela/Preto',
+      'Laranja/Branco', 'Laranja', 'Laranja/Preto',
+      'Verde/Branco', 'Verde', 'Verde/Preto',
+      'Azul', 'Roxa', 'Marrom', 'Preta'
+    ];
+
+    listaGraduacoes.forEach(grad => {
+      const tempo = configGraduacoes[grad.toLowerCase()] || 6;
+      const div = document.createElement('div');
+      div.className = 'graduacao-item-foto';
+      div.innerHTML = `
+        <i class="fas fa-award"></i>
+        <span class="nome-faixa">${grad}</span>
+        <span class="label-tempo">Tempo mínimo para próxima graduação</span>
+        <div class="controle-foto">
+          <input type="number" min="1" max="24" value="${tempo}" data-graduacao="${grad}" class="input-tempo-graduacao-foto">
+          <span class="unidade">meses</span>
+        </div>
+      `;
+      list.appendChild(div);
+    });
+  }
+
   function salvarConfigGraduacoesModal() {
-    document.querySelectorAll('[data-grad]').forEach(input => {
-      configGraduacoes[input.dataset.grad] = parseInt(input.value) || 0;
+    const inputs = document.querySelectorAll('.input-tempo-graduacao-foto');
+    inputs.forEach(input => {
+      const graduacao = input.dataset.graduacao.toLowerCase();
+      const valor = parseInt(input.value);
+      if (valor > 0) {
+        configGraduacoes[graduacao] = valor;
+      }
     });
     salvarConfigGraduacoes();
-    fecharModalConfigGraduacoes();
     renderizarEvolucoes();
-    showToast('⚙️ Configurações salvas!', 'success');
+    fecharModalConfigGraduacoes();
+    showToast('✅ Configurações salvas!', 'success');
   }
 
   function restaurarConfigGraduacoes() {
-    configGraduacoes = {
-      branca: 3, cinza: 4, amarela: 6, laranja: 6, verde: 12, azul: 12, roxa: 24, marrom: 24, preta: 48
+    if (!confirm('🔄 Restaurar valores padrão das graduações?')) return;
+    const valoresPadrao = {
+      branca: 3, 'cinza/branca': 4, cinza: 4, 'cinza/preto': 5,
+      'amarela/branca': 5, amarela: 5, 'amarela/preto': 6,
+      'laranja/branco': 6, laranja: 6, 'laranja/preto': 7,
+      'verde/branco': 7, verde: 7, 'verde/preto': 8,
+      azul: 8, roxa: 9, marrom: 10, preta: 12
     };
-    abrirModalConfigGraduacoes();
-    showToast('Configurações restauradas!', 'info');
+    Object.keys(valoresPadrao).forEach(key => {
+      configGraduacoes[key] = valoresPadrao[key];
+    });
+    salvarConfigGraduacoes();
+    renderizarConfigGraduacoesModal();
+    renderizarEvolucoes();
+    showToast('🔄 Configurações restauradas!', 'info');
   }
 
   // ============================================================
@@ -2616,7 +2846,6 @@
   // INICIALIZAÇÃO
   // ============================================================
   document.addEventListener('DOMContentLoaded', () => {
-    // Carrega dados
     const savedAlunos = localStorage.getItem(CONFIG.STORAGE_KEY);
     if (savedAlunos) alunos = JSON.parse(savedAlunos);
 
@@ -2633,7 +2862,13 @@
     if (savedConfig) {
       configGraduacoes = JSON.parse(savedConfig);
     } else {
-      configGraduacoes = { branca: 3, cinza: 4, amarela: 6, laranja: 6, verde: 12, azul: 12, roxa: 24, marrom: 24, preta: 48 };
+      configGraduacoes = {
+        branca: 3, 'cinza/branca': 4, cinza: 4, 'cinza/preto': 5,
+        'amarela/branca': 5, amarela: 5, 'amarela/preto': 6,
+        'laranja/branco': 6, laranja: 6, 'laranja/preto': 7,
+        'verde/branco': 7, verde: 7, 'verde/preto': 8,
+        azul: 8, roxa: 9, marrom: 10, preta: 12
+      };
     }
 
     const savedTheme = localStorage.getItem(CONFIG.STORAGE_THEME_KEY);
@@ -2642,7 +2877,6 @@
       document.querySelector('#themeToggle i').className = 'fas fa-sun';
     }
 
-    // PIN inputs
     document.querySelectorAll('.pin-digit').forEach((input, index, inputs) => {
       input.addEventListener('input', (e) => {
         if (e.target.value.length === 1 && index < inputs.length - 1) inputs[index + 1].focus();
@@ -2651,7 +2885,6 @@
       input.addEventListener('focus', () => input.select());
     });
 
-    // Configura inputs do modal de alteração de PIN
     document.querySelectorAll('.pin-digit-confirm').forEach((input, index, inputs) => {
       input.addEventListener('input', () => {
         if (input.value.length === 1 && index < inputs.length - 1) inputs[index + 1].focus();
@@ -2673,7 +2906,6 @@
       input.addEventListener('focus', () => input.select());
     });
 
-    // Mostra login
     document.getElementById('modalLogin').classList.add('active');
   });
 
@@ -2695,13 +2927,10 @@
   window.atualizarRelatorioPorPeriodo = atualizarRelatorioPorPeriodo;
   window.exportarPDF = exportarPDF;
   window.exportarCSV = exportarCSV;
-
-  // NOVAS FUNÇÕES DE BACKUP
   window.copiarBackup = copiarBackup;
   window.abrirModalRestaurar = abrirModalRestaurar;
   window.fecharModalRestaurar = fecharModalRestaurar;
   window.executarRestaurarColar = executarRestaurarColar;
-
   window.switchTab = switchTab;
   window.alternarTema = alternarTema;
   window.verificarPIN = verificarPIN;
@@ -2721,10 +2950,11 @@
   window.verTodasEvolucoes = verTodasEvolucoes;
   window.excluirEvolucao = excluirEvolucao;
   window.abrirModalConfigGraduacoes = abrirModalConfigGraduacoes;
+  window.fecharModalConfigGraduacoes = fecharModalConfigGraduacoes;
   window.salvarConfigGraduacoesModal = salvarConfigGraduacoesModal;
   window.restaurarConfigGraduacoes = restaurarConfigGraduacoes;
-  window.fecharModalConfigGraduacoes = fecharModalConfigGraduacoes;
   window.fecharModalRelatorio = fecharModalRelatorio;
+  window.renderizarConfigGraduacoesModal = renderizarConfigGraduacoesModal;
 </script>
 </body>
 </html>
