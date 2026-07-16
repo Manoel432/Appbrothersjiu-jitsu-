@@ -2596,31 +2596,21 @@ function exportarCSV(){
   showToast(`📎 CSV exportado!`, 'success'); 
 }
 
-function backupDados(){
-// Pega todos os dados e transforma em texto
-const dados={ versao:"12.0", dataBackup:new Date().toISOString(), valorMensalidade, alunos, evolucoes, configGraduacoes };
-const textoBackup = JSON.stringify(dados);
-
-// Tenta copiar para a área de transferência (memória)
-navigator.clipboard.writeText(textoBackup).then(() => {
-showToast('📋 Backup copiado! Abrindo WhatsApp...', 'success');
-
-// Abre o WhatsApp para você enviar para si mesmo
-setTimeout(() => {
-window.location.href = "https://wa.me/?text=" + encodeURIComponent("BACKUP BROTHERS JIU-JITSU:\n" + textoBackup);
-}, 1000);
-
-}).catch(err => {
-// Se não conseguir copiar, mostra na tela para o usuário copiar manualmente
-alert("COPIE O TEXTO ABAIXO:\n\n" + textoBackup);
-showToast('Copie o texto exibido na tela!', 'warning', 5000);
-});
+function backupDados(){ 
+  const dados={ versao:"12.0", dataBackup:new Date().toISOString(), valorMensalidade, alunos, evolucoes, configGraduacoes }; 
+  const blob=new Blob([JSON.stringify(dados,null,2)],{type:'application/json'}); 
+  const a=document.createElement('a'); 
+  a.href=URL.createObjectURL(blob); 
+  a.download=`backup_brothers_${new Date().toISOString().slice(0,10)}.json`; 
+  a.click(); 
+  URL.revokeObjectURL(a.href); 
+  showToast('💾 Backup realizado!', 'success'); 
 }
 
 function restaurarDados(){ 
   const input=document.createElement('input'); 
   input.type='file'; 
-input.accept='.json,.docx,.txt';
+  input.accept='.json'; 
   input.onchange=(e)=>{ 
     const file=e.target.files[0]; 
     if(!file) return; 
