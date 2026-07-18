@@ -748,7 +748,31 @@
       transform: scale(1.1);
     }
 
-    .action-btn.whatsapp { background: #25D366; }
+    .action-btn.whatsapp {
+      background: #25D366;
+      position: relative;
+    }
+
+    .action-btn.whatsapp .tooltip {
+      position: absolute;
+      bottom: 110%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--secondary);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.6rem;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+
+    .action-btn.whatsapp:hover .tooltip {
+      opacity: 1;
+    }
+
     .action-btn.edit { background: #3498DB; }
     .action-btn.delete { background: #E74C3C; }
 
@@ -1256,7 +1280,7 @@
       flex-wrap: wrap;
     }
 
-    /* ===== CONFIGURAÇÕES DE GRADUAÇÃO - ESTILO DA FOTO ===== */
+    /* ===== CONFIGURAÇÕES DE GRADUAÇÃO ===== */
     .graduacao-config-modal {
       padding: 5px 0;
     }
@@ -1932,7 +1956,11 @@
     STORAGE_EVO_KEY: 'brothers_evolucao',
     STORAGE_CONFIG_KEY: 'brothers_config_grad',
     STORAGE_THEME_KEY: 'brothers_theme',
-    STORAGE_PIN_KEY: 'brothers_pin'
+    STORAGE_PIN_KEY: 'brothers_pin',
+    PIX_INFANTIL_JUVENIL: '91 991426494',
+    PIX_ADULTO: '91 992336494',
+    NOME_ACADEMIA: '🏛️ *BROTHERS JIU-JITSU*',
+    SLOGAN: '🥋 *Brothers Jiu-Jitsu – Disciplina e Excelência*'
   };
 
   let alunos = [];
@@ -2282,7 +2310,10 @@
         ${mesesHtml}
         <td>
           <div class="action-buttons">
-            <button class="action-btn whatsapp" onclick="window.open('${whatsappLink}', '_blank')" title="WhatsApp"><i class="fab fa-whatsapp"></i></button>
+            <button class="action-btn whatsapp" onclick="enviarMensagemCobranca(${index})" title="WhatsApp">
+              <i class="fab fa-whatsapp"></i>
+              <span class="tooltip">Copiar mensagem</span>
+            </button>
             <button class="action-btn edit" onclick="editarAluno(${index})" title="Editar"><i class="fas fa-edit"></i></button>
             <button class="action-btn delete" onclick="excluirAluno(${index})" title="Excluir"><i class="fas fa-trash"></i></button>
           </div>
@@ -2330,6 +2361,89 @@
     salvar();
     renderizarTabela();
     renderizarEvolucoes();
+  }
+
+  // ============================================================
+  // WHATSAPP - FUNÇÃO CORRIGIDA
+  // ============================================================
+  function enviarMensagemCobranca(idx) {
+    const aluno = alunos[idx];
+    
+    if (!aluno.whatsapp) {
+      showToast(`⚠️ ${aluno.nome} sem WhatsApp cadastrado!`, 'warning');
+      return;
+    }
+
+    const mesAtual = new Date().getMonth();
+    const anoAtual = new Date().getFullYear();
+    const mesNome = mesesFull[mesAtual];
+    const pago = aluno.meses[mesAtual]?.pago;
+    const dataPag = obterDataPagamentoFormatada(aluno, mesAtual);
+    const dataInicioFormatada = aluno.dataInicio ? aluno.dataInicio.split('-').reverse().join('/') : "não informada";
+    
+    // Determina o PIX baseado na turma
+    const pixNumero = aluno.turma === 'adulto' ? CONFIG.PIX_ADULTO : CONFIG.PIX_INFANTIL_JUVENIL;
+    const turmaLabel = { infantil: 'Infantil', juvenil: 'Juvenil', adulto: 'Adulto' }[aluno.turma] || aluno.turma;
+    const turmaEmoji = { infantil: '👶', juvenil: '🧑', adulto: '💪' }[aluno.turma] || '🥋';
+    
+    const statusTexto = pago ? "✅ PAGO" : "❌ *Pendente*";
+    const aviso = !pago ? "🔔 Identificamos em nosso sistema que sua mensalidade ainda não foi quitada. Pedimos por gentileza, que realize o pagamento até a data de vencimento." : "✅ Agradecemos o pagamento!";
+    
+    let msg = `${CONFIG.NOME_ACADEMIA}\n\nOlá, *${aluno.nome}*! Tudo bem?\n\n${turmaEmoji} *Turma:* ${turmaLabel}\n📆 *Mensalidade de ${mesNome}/${anoAtual}*\n💰 *Valor:* R$ ${valorMensalidade.toFixed(2).replace('.', ',')}\n📊 *Status:* ${statusTexto}`;
+    
+    if (!pago && dataPag) {
+      msg += `\n📅 *Vencimento:* ${dataPag}`;
+    }
+    
+    if (!pago) {
+      msg += `\n\n${aviso}\n\n💳 *Formas de pagamento:*\n• PIX: ${pixNumero}\n• Dinheiro (na academia)\n• Transferência bancária\n\n✨Após o pagamento envie o comprovante para que possamos atualizar seu cadastro`;
+    } else {
+      msg += `\n\n${aviso}`;
+    }
+    
+    msg += `\n\n📆 Início das atividades: ${dataInicioFormatada}\n\n${CONFIG.SLOGAN}`;
+
+    // Função para copiar a mensagem
+    function copiarTexto(texto) {
+      const areaTexto = document.createElement("textarea");
+      areaTexto.value = texto;
+      areaTexto.style.position = "fixed";
+      areaTexto.style.left = "-9999px";
+      areaTexto.style.top = "-9999px";
+      document.body.appendChild(areaTexto);
+      areaTexto.select();
+      areaTexto.setSelectionRange(0, 99999);
+      
+      try {
+        document.execCommand('copy');
+        showToast(`📋 Mensagem copiada! Cole no WhatsApp.`, 'success', 4000);
+      } catch (e) {
+        // Fallback: mostra a mensagem para copiar manualmente
+        alert("📋 COPIE A MENSAGEM ABAIXO:\n\n" + texto);
+        showToast(`📋 Mensagem exibida na tela. Copie e cole no WhatsApp.`, 'info', 5000);
+      }
+      document.body.removeChild(areaTexto);
+    }
+
+    // Tenta usar a Clipboard API primeiro
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(msg).then(() => {
+        showToast(`📋 Mensagem copiada! Abra o WhatsApp de ${aluno.nome}.`, 'success', 4000);
+      }).catch(() => {
+        copiarTexto(msg);
+      });
+    } else {
+      copiarTexto(msg);
+    }
+  }
+
+  function obterDataPagamentoFormatada(aluno, mesIndex) {
+    const data = aluno.meses[mesIndex];
+    if (!data.diaPagamento) return "";
+    if (data.mesPagamento !== null && data.mesPagamento !== undefined) {
+      return `${data.diaPagamento}/${String(data.mesPagamento + 1).padStart(2, '0')}${data.anoPagamento ? '/' + data.anoPagamento : ''}`;
+    }
+    return data.diaPagamento.toString();
   }
 
   // ============================================================
@@ -2655,7 +2769,7 @@
   }
 
   // ============================================================
-  // CONFIGURAÇÕES DE GRADUAÇÃO - ESTILO DA FOTO
+  // CONFIGURAÇÕES DE GRADUAÇÃO
   // ============================================================
   function abrirModalConfigGraduacoes() {
     renderizarConfigGraduacoesModal();
@@ -2955,6 +3069,7 @@
   window.restaurarConfigGraduacoes = restaurarConfigGraduacoes;
   window.fecharModalRelatorio = fecharModalRelatorio;
   window.renderizarConfigGraduacoesModal = renderizarConfigGraduacoesModal;
+  window.enviarMensagemCobranca = enviarMensagemCobranca;
 </script>
 </body>
 </html>
